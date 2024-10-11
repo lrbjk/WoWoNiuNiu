@@ -8,11 +8,13 @@ public class PlayerController : MonoBehaviour
 {
     private PlayerInput playerInput;
     public CameraController cameraController;
+    public GameObject Model;
     private BoxCollider box;
     private Rigidbody rb;
     public float gravity = -9.8f;
     public float moveSpeed = 5;
     public float JumpSpeed = 5;
+    public float turnSpeed = 90;
     // Start is called before the first frame update
     void Start()
     {
@@ -55,11 +57,23 @@ public class PlayerController : MonoBehaviour
         if (StaticData.is2DCamera)
         {
             cameraController.mainCamera.orthographic = true;
+            Model.transform.rotation = new Quaternion(0,0,0,0);
             rb.velocity = new Vector2(input.x * moveSpeed,0);
         }
         else
         {
-            rb.velocity = new Vector3(input.y,0,-input.x)*moveSpeed;
+            Vector3 moveDirection = rb.velocity.normalized;
+
+            // 检查移动方向是否有效，避免零向量的旋转
+            if (moveDirection != Vector3.zero)
+            {
+                // 目标旋转是面向移动方向的旋转
+                Quaternion targetRotation = Quaternion.LookRotation(new Vector3(moveDirection.x, 0, moveDirection.z));
+
+                // 平滑地旋转到目标方向
+                Model.transform.rotation = Quaternion.Slerp(Model.transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+            }
+            rb.velocity = new Vector3(input.y, 0, -input.x) * moveSpeed;
         }
     }
     
