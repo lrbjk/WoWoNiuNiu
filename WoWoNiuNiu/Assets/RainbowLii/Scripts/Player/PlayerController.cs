@@ -49,16 +49,6 @@ public class PlayerController : MonoBehaviour
 
         Vector2 input = playerInput.Player.Move.ReadValue<Vector2>();
 
-        if(input.x >= 0){
-            if(StaticData.is2DCamera){
-                _forward[0] = 1;
-            }
-        }else{
-            if(StaticData.is2DCamera){
-                _forward[0] = -1;
-            }
-        }
-
         if (input.magnitude >= 0.5f)
         {
             How2Move(input);
@@ -72,6 +62,17 @@ public class PlayerController : MonoBehaviour
         {
             //rb.AddForce(Vector3.up * gravity, ForceMode.Force);
             rb.useGravity = true;
+
+            // 把更改_forward[]的能力封存在isClimbing为否的条件下
+            if(input.x >= 0){
+                if(StaticData.is2DCamera){
+                    _forward[0] = 1;
+                }
+            }else{
+                if(StaticData.is2DCamera){
+                    _forward[0] = -1;
+                }
+            }
         }
     }
 
