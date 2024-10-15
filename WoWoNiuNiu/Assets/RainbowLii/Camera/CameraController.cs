@@ -9,10 +9,13 @@ public class CameraController : MonoBehaviour
     public CinemachineVirtualCamera threeD_Camera;
     public Camera mainCamera;
     private bool is2DCamera;
+    private Light[] lights;
     // Start is called before the first frame update
     void Start()
     {
-        
+       
+        lights = FindObjectsOfType<Light>();  
+        //get all light in this scene
     }
 
     // Update is called once per frame
@@ -22,6 +25,11 @@ public class CameraController : MonoBehaviour
         {
             if (is2DCamera)
             {
+                foreach (Light light in lights)
+                {
+                    light.shadows = LightShadows.Hard;
+                }
+                //open shadow when 3D
                 twoD_Camera.Priority = 0;
                 threeD_Camera.Priority = 10;
                 is2DCamera = false;
@@ -30,6 +38,11 @@ public class CameraController : MonoBehaviour
             }
             else
             {
+                foreach (Light light in lights)
+                {
+                    light.shadows = LightShadows.None;
+                }
+                //close shadow when 2D
                 threeD_Camera.Priority = 0;
                 twoD_Camera.Priority = 10;
                 is2DCamera = true;
