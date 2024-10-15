@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     public BoxCollider box;
     private Rigidbody rb;
     private bool canClimb;
-    private bool isClimbing;
+    public bool isClimbing;
     public float gravity = -9.8f;
     public float moveSpeed = 5;
     public float jumpSpeed = 5;
@@ -37,10 +37,16 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        box.center = new Vector3(0, 0.87f, 0);
+
+        
         if (StaticData.is2DCamera)
         {
-            box.size = new Vector3(20, 1.6f, 2.38f);
+            if(!isClimbing){
+                box.size = new Vector3(20, 1.266826f, 1.489801f);
+            }else{
+                box.size = new Vector3(20, 2.11f, 1.489801f);
+            }
+            
         }
         else
         {
@@ -63,6 +69,9 @@ public class PlayerController : MonoBehaviour
             //rb.AddForce(Vector3.up * gravity, ForceMode.Force);
             rb.useGravity = true;
 
+            // 在攀爬模式下，会更改模型碰撞体的中心位置。
+            box.center = new Vector3(-5.53998f, 0.70341f, -0.1639f);
+
             // 把更改_forward[]的能力封存在isClimbing为否的条件下
             if(input.x >= 0){
                 if(StaticData.is2DCamera){
@@ -72,6 +81,10 @@ public class PlayerController : MonoBehaviour
                 if(StaticData.is2DCamera){
                     _forward[0] = -1;
                 }
+            }
+        }else{
+            if(StaticData.is2DCamera){
+                box.center = new Vector3(0, 0.14f, 0);
             }
         }
     }
