@@ -50,8 +50,10 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _distanceScale: 0.001
+    - _distanceStep: 1.72
     m_Colors:
     - _noiseTilling: {r: 1, g: 1, b: 0, a: 0}
-    - _noiseoffset: {r: 0, g: 0, b: 0, a: 0}
-    - _woniu_position: {r: 10.568541, g: 0.4300031, b: 0.0013523102, a: 0}
+    - _noiseoffset: {r: 7.36, g: 5.27, b: 0, a: 0}
+    - _woniu_position: {r: 0, g: 1.2700002, b: 0, a: 0}
   m_BuildTextureStacks: []
