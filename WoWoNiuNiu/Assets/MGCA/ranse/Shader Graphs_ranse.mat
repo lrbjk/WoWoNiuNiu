@@ -34,6 +34,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _rb:
+        m_Texture: {fileID: 2800000, guid: 66cf43bc701b91c44ab69938d6736fba, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -51,9 +55,15 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _distanceScale: 0.001
-    - _distanceStep: 1.72
+    - _distanceStep: 0.92
+    - _edgeContorol: 3.32
+    - _lerp: 0.38
+    - _lerp1: 0.75
+    - _liudong_Intensity: 3.73
+    - _smoothstepControl: 1.62
     m_Colors:
     - _noiseTilling: {r: 1, g: 1, b: 0, a: 0}
-    - _noiseoffset: {r: 7.36, g: 5.27, b: 0, a: 0}
-    - _woniu_position: {r: 0, g: 1.2700002, b: 0, a: 0}
+    - _noiseoffset: {r: 11.41, g: 1.07, b: 0, a: 0}
+    - _point: {r: 1.14, g: 0.43, b: 0, a: 0}
+    - _woniu_position: {r: 9.946355, g: -24.843393, b: 3.5014858, a: 0}
   m_BuildTextureStacks: []
