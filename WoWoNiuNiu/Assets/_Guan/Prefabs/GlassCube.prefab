@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7922018087943498984}
   - component: {fileID: 5337995034128521250}
   - component: {fileID: -4474358393549389378}
+  - component: {fileID: 6826472924593377755}
   m_Layer: 0
   m_Name: GlassCube
   m_TagString: Untagged
@@ -99,3 +100,16 @@ MonoBehaviour:
   glassPrefab: {fileID: 5842473028082481655}
   tilesize: 16
   tileoffset: {x: 0, y: 0, z: 0}
+--- !u!65 &6826472924593377755
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5842473028082481655}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.5999999, y: 1.6000001, z: 1.6000001}
+  m_Center: {x: 0, y: 0.0002605319, z: 0}

@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     public float jumpSpeed = 5;
     public float climbSpeed = 3;
     public float turnSpeed = 90;
-
+    private int enterTimes = 0;
     // 纠正因子 fixUper/_forward[0]为2D模式，fixUper/_forward[1]为3D模式
     public float[] fixUper;
     public int[] _forward;
@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            box.size = new Vector3(2, 1.6f, 2.38f);
+            box.size = new Vector3(1.201506f, 1.321589f, 1.467142f);
         }
 
         Vector2 input = playerInput.Player.Move.ReadValue<Vector2>();
@@ -70,7 +70,15 @@ public class PlayerController : MonoBehaviour
             rb.useGravity = true;
 
             // 在攀爬模式下，会更改模型碰撞体的中心位置。
-            box.center = new Vector3(-5.53998f, 0.70341f, -0.1639f);
+            if (StaticData.is2DCamera)
+            {
+                box.center = new Vector3(-5.53998f, 0.70341f, -0.1639f);
+            }
+            else
+            {
+                box.center = new Vector3(0,0.7f,0);
+            }
+           
 
             // 把更改_forward[]的能力封存在isClimbing为否的条件下
             if(input.x >= 0){
@@ -84,7 +92,8 @@ public class PlayerController : MonoBehaviour
             }
         }else{
             if(StaticData.is2DCamera){
-                box.center = new Vector3(0, 0.14f, 0);
+                if (_forward[0] == 1) box.center = new Vector3(0, 0.14f, 0);
+                else box.center = new Vector3(0, 0.14f, -0.2f);
             }
         }
     }
@@ -150,13 +159,15 @@ public class PlayerController : MonoBehaviour
         {
             isClimbing = false;
             rb.useGravity = true; // 恢复重力
+            enterTimes = 0;
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == 6)
+        if (collision.gameObject.layer == 6 && enterTimes == 0)
         {
+            enterTimes = 1;
             canClimb = true;
             isClimbing = true;
 
@@ -180,16 +191,17 @@ public class PlayerController : MonoBehaviour
 
             
             // 因为碰撞体之间存在间距，在这里添加一个纠正因子。
-                Model.transform.position = new Vector3(Model.transform.position.x + fixUper[0] * _forward[0], Model.transform.position.y, Model.transform.position.z);
+             Model.transform.position = new Vector3(Model.transform.position.x + fixUper[0] * _forward[0], Model.transform.position.y, Model.transform.position.z);
 
-            
+            Debug.Log("hxy");
         }
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.layer == 6)
+        if (collision.gameObject.layer == 6 && enterTimes == 0)
         {
+            enterTimes = 0;
             canClimb = false;
             isClimbing = false;
             rb.useGravity = true; // 离开可攀爬区域时恢复重力
