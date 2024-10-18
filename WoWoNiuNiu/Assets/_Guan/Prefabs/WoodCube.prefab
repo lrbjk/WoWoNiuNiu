@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 4391183402641308442}
   - component: {fileID: 1951300278801551312}
   - component: {fileID: -9199500978839146308}
-  m_Layer: 0
+  - component: {fileID: 4145686150341855138}
+  m_Layer: 6
   m_Name: WoodCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,3 +100,16 @@ MonoBehaviour:
   glassPrefab: {fileID: 5793549412593157}
   tilesize: 16
   tileoffset: {x: 0, y: 0, z: 0}
+--- !u!65 &4145686150341855138
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5793549412593157}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.5999999, y: 1.6000001, z: 1.6000004}
+  m_Center: {x: 0, y: 0.00000029802322, z: 0.00001335144}
