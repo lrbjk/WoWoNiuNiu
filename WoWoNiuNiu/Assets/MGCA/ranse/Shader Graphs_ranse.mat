@@ -65,5 +65,5 @@ Material:
     - _noiseTilling: {r: 1, g: 1, b: 0, a: 0}
     - _noiseoffset: {r: 11.41, g: 1.07, b: 0, a: 0}
     - _point: {r: 1.14, g: 0.43, b: 0, a: 0}
-    - _woniu_position: {r: 9.946355, g: -24.843393, b: 3.5014858, a: 0}
+    - _woniu_position: {r: 0.93606186, g: 0.4300031, b: 0.0022010803, a: 0}
   m_BuildTextureStacks: []
