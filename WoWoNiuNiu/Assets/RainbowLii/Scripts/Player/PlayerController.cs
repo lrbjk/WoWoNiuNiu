@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     // 纠正因子 fixUper/_forward[0]为2D模式，fixUper/_forward[1]为3D模式
     public float[] fixUper;
     public int[] _forward;
-
+    public List<GameObject> wallName = new List<GameObject>();
     // Start is called before the first frame update
     void Start()
     {
@@ -35,16 +35,14 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-
-        
         if (StaticData.is2DCamera)
         {
             if(!isClimbing){
                 box.size = new Vector3(20, 1.266826f, 1.489801f);
             }else{
-                box.size = new Vector3(20, 2.11f, 1.489801f);
+                //box.size = new Vector3(20, 2.11f, 1.489801f);
             }
             
         }
@@ -52,6 +50,7 @@ public class PlayerController : MonoBehaviour
         {
             box.size = new Vector3(1.201506f, 1.321589f, 1.467142f);
         }
+        //Debug.Log(input);
 
         Vector2 input = playerInput.Player.Move.ReadValue<Vector2>();
 
@@ -165,9 +164,21 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == 6 && enterTimes == 0)
+        if (collision.gameObject.layer == 6)
         {
-            enterTimes = 1;
+            if (wallName.Count == 0)
+            {
+                if (_forward[0] == 1)
+                {
+                    Model.transform.position = new Vector3(Model.transform.position.x + fixUper[0] * _forward[0], Model.transform.position.y, Model.transform.position.z);
+                }
+                else
+                {
+                    Model.transform.position = new Vector3(Model.transform.position.x + fixUper[1] * _forward[0], Model.transform.position.y, Model.transform.position.z);
+                }
+                Debug.Log("hxy");
+            }
+            wallName.Add(collision.gameObject);
             canClimb = true;
             isClimbing = true;
 
@@ -188,34 +199,35 @@ public class PlayerController : MonoBehaviour
 
                 Model.transform.rotation = Quaternion.Euler(new Vector3(-90, 0, 270));
             }
+            // 因为碰撞体之间存在间距，在这里添加一个纠正因子。
+            
 
             
-            // 因为碰撞体之间存在间距，在这里添加一个纠正因子。
-             Model.transform.position = new Vector3(Model.transform.position.x + fixUper[0] * _forward[0], Model.transform.position.y, Model.transform.position.z);
-
-            Debug.Log("hxy");
         }
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.layer == 6 && enterTimes == 0)
+        if (collision.gameObject.layer == 6)
         {
-            enterTimes = 0;
-            canClimb = false;
-            isClimbing = false;
-            rb.useGravity = true; // 离开可攀爬区域时恢复重力
+            wallName.Remove(collision.gameObject);
+            if (wallName.Count == 0)
+            {
+                canClimb = false;
+                isClimbing = false;
+                rb.useGravity = true; // 离开可攀爬区域时恢复重力
 
-            // 旋转时切换碰撞体
+                // 旋转时切换碰撞体
 
-            // 旋转时在X轴发生偏转
-            Vector3 climbDirection = new Vector3(0, 0, 0);
-            Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, climbDirection); // 保持前方为Z轴
-            Model.transform.rotation = Quaternion.Slerp(Model.transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+                // 旋转时在X轴发生偏转
+                Vector3 climbDirection = new Vector3(0, 0, 0);
+                Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, climbDirection); // 保持前方为Z轴
+                Model.transform.rotation = Quaternion.Slerp(Model.transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
 
-            // 因为碰撞体之间存在间距，在这里添加一个纠正因子。
-            // Model.transform.position = new Vector3(Model.transform.position.x - fixUper[0] * _forward[0], Model.transform.position.y, Model.transform.position.z);
-            Model.transform.localPosition = new Vector3(0,0,0);
+                // 因为碰撞体之间存在间距，在这里添加一个纠正因子。
+                // Model.transform.position = new Vector3(Model.transform.position.x - fixUper[0] * _forward[0], Model.transform.position.y, Model.transform.position.z);
+                Model.transform.localPosition = new Vector3(0, 0, 0);
+            }
         }
     }
 }
