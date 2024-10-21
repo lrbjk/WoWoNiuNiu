@@ -136,6 +136,7 @@ Shader "Unlit/RanseCode"
             half _textureSize;
             float4 _SpecColor;
             half _ifShadow;
+            half4 _secColor;
 
             void InitializeInputData(Varyings input,half3 normalTS,out InputData inputData)
             {
@@ -219,7 +220,7 @@ Shader "Unlit/RanseCode"
                 half final1 =clamp((step(cent1 - NoiseColor,_shiStep ) + step(NoiseColor * 0.7 ,clamp(pow(cent2,2) * 1.5,0,0.8)) * 0.6)* clamp(IN.normal.y,0,1),0,1);
                 
                 
-                half3 albedo =  (final1 * SAMPLE_TEXTURE2D(_NoiseColor,sampler_NoiseColor,IN.uv.xy)* _baseColor + (1-final1) * SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,IN.uv.xy)) * clamp( IN.normal.y,0,1) + SAMPLE_TEXTURE2D(_SecTex,sampler_SecTex,IN.posWS.xy) * abs(-IN.normal.z);
+                half3 albedo =  (final1 * SAMPLE_TEXTURE2D(_NoiseColor,sampler_NoiseColor,IN.uv.xy)* _baseColor + (1-final1) * SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,IN.uv.xy)) * clamp( IN.normal.y,0,1) + SAMPLE_TEXTURE2D(_SecTex,sampler_SecTex,IN.posWS.xy).r * abs(-IN.normal.z) * _secColor;
                 half4 SpecularColor = _SpecColor;
 
                 half3 normalTS = UnpackNormal(SAMPLE_TEXTURE2D(_bump,sampler_bump,IN.uv.xy+ float2(_Time.y,0) * 0.1)) * final1 + (1-final1) * IN.normal;

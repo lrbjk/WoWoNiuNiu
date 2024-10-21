@@ -25,7 +25,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NoiseColor:
-        m_Texture: {fileID: 2800000, guid: d38e3beae7fc16e41bc4f4ed814c1db3, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9a7123797c0f0994594a047e02e4d5de, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NoiseMap:
@@ -33,7 +33,7 @@ Material:
         m_Scale: {x: 2.84, y: 1.04}
         m_Offset: {x: 0, y: 0}
     - _SecTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: f8590e409bc4582409044d60fe24e44e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -59,7 +59,7 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
     - _baseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _secColor: {r: 1, g: 1, b: 1, a: 1}
+    - _secColor: {r: 0.38845193, g: 1, b: 0, a: 1}
     - _startPoint: {r: 0, g: 0, b: 0, a: 0}
     - _textureSize: {r: 256, g: 256, b: 0, a: 1}
     - _woniu_position: {r: -3.4413, g: 1.7728, b: 0.045045, a: 0}
