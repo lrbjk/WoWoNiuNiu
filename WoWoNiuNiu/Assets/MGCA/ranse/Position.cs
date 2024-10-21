@@ -41,7 +41,6 @@ public class Position : MonoBehaviour
             int y = (int)(transform.position.z - startPoint.z + textureSize / 2.0f);
             if (x >= 0 && x < textureSize && y >= 0 && y < textureSize)
             {
-                        Debug.Log(x + "," + y);
                         pathTexture.SetPixel(x, y, Color.white);
             }  
             pathTexture.Apply();
