@@ -83,16 +83,23 @@ public class PlayerController : MonoBehaviour
             if(input.x >= 0){
                 if(StaticData.is2DCamera){
                     _forward[0] = 1;
-                }else{
-                    _forward[1] = 1;
                 }
             }else{
                 if(StaticData.is2DCamera){
                     _forward[0] = -1;
-                }else{
+                }
+            }
+
+            if(input.y >= 0){
+                if(!StaticData.is2DCamera){
+                    _forward[1] = 1;
+                }
+            }else{
+                if(!StaticData.is2DCamera){
                     _forward[1] = -1;
                 }
             }
+
         }else{
             if(StaticData.is2DCamera){
                 if (_forward[0] == 1) box.center = new Vector3(0, 0.14f, 0);
@@ -129,13 +136,19 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            Vector3 moveDirection = new Vector3(input.y, 0, -input.x);
-            if (moveDirection != Vector3.zero)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(new Vector3(moveDirection.x, 0, moveDirection.z));
-                Model.transform.rotation = Quaternion.Slerp(Model.transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+            if(isClimbing){
+                Climbing3D(input);
+            }else{
+                Vector3 moveDirection = new Vector3(input.y, 0, -input.x);
+                if (moveDirection != Vector3.zero)
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(new Vector3(moveDirection.x, 0, moveDirection.z));
+                    Model.transform.rotation = Quaternion.Slerp(Model.transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+                }
+                rb.velocity = moveDirection * moveSpeed;
             }
-            rb.velocity = moveDirection * moveSpeed;
+
+            
         }
     }
 
@@ -172,13 +185,13 @@ public class PlayerController : MonoBehaviour
     private void Climbing3D(Vector2 input)
     {
         // // 攀爬逻辑
-        // rb.useGravity = false; // 禁用重力
+        rb.useGravity = false; // 禁用重力
 
-        // if(_forward[0] == 1){
-        //     rb.velocity = new Vector2(0, input.x * climbSpeed); // 使用输入的Y值进行上下攀爬
-        // }else{
-        //     rb.velocity = new Vector2(0, input.x * -climbSpeed); // 使用输入的Y值的反向进行上下攀爬
-        // }
+        if(_forward[1] == 1){
+            rb.velocity = new Vector2(0, input.y * climbSpeed); // 使用输入的Y值进行上下攀爬
+        }else{
+            rb.velocity = new Vector2(0, input.y * -climbSpeed); // 使用输入的Y值的反向进行上下攀爬
+        }
         
 
         // Vector3 moveDirection = rb.velocity.normalized;
@@ -190,82 +203,126 @@ public class PlayerController : MonoBehaviour
         //     Model.transform.rotation = Quaternion.Slerp(Model.transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
         // }
 
-        // // 停止攀爬
-        // if (input.x == 0)
-        // {
-        //     isClimbing = false;
-        //     rb.useGravity = true; // 恢复重力
-        //     enterTimes = 0;
-        // }
+        // 停止攀爬
+        if (input.y == 0)
+        {
+            isClimbing = false;
+            rb.useGravity = true; // 恢复重力
+            enterTimes = 0;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == 6)
-        {
-            if (wallName.Count == 0)
+        if(StaticData.is2DCamera){
+            if (collision.gameObject.layer == 6 || collision.gameObject.layer == 1)
             {
-                if (_forward[0] == 1)
+                if (wallName.Count == 0)
                 {
-                    Model.transform.position = new Vector3(Model.transform.position.x + fixUper[0] * _forward[0], Model.transform.position.y, Model.transform.position.z);
+                    if (_forward[0] == 1)
+                    {
+                        Model.transform.position = new Vector3(Model.transform.position.x + fixUper[0] * _forward[0], Model.transform.position.y, Model.transform.position.z);
+                    }
+                    else
+                    {
+                        Model.transform.position = new Vector3(Model.transform.position.x + fixUper[1] * _forward[0], Model.transform.position.y, Model.transform.position.z);
+                    }
+                    Debug.Log("hxy");
                 }
-                else
-                {
-                    Model.transform.position = new Vector3(Model.transform.position.x + fixUper[1] * _forward[0], Model.transform.position.y, Model.transform.position.z);
+                wallName.Add(collision.gameObject);
+                canClimb = true;
+                isClimbing = true;
+
+                Vector3 climbDirection;
+
+                Quaternion targetRotation;
+
+                // 旋转时在X轴发生偏转
+                if(_forward[0] == 1){
+                    climbDirection = new Vector3(-90f, 0, 0);
+                    targetRotation = Quaternion.LookRotation(Vector3.up, climbDirection); // 保持前方为Z轴
+
+                    Model.transform.rotation = Quaternion.Slerp(Model.transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+
+                }else{
+                    // climbDirection = new Vector3(-90f, 0, 180f);
+                    // targetRotation = Quaternion.LookRotation(Vector3.down, climbDirection); // 保持前方为Z轴
+
+                    Model.transform.rotation = Quaternion.Euler(new Vector3(-90, 0, 270));
                 }
-                Debug.Log("hxy");
-            }
-            wallName.Add(collision.gameObject);
-            canClimb = true;
-            isClimbing = true;
+                // 因为碰撞体之间存在间距，在这里添加一个纠正因子。
+                
 
-            Vector3 climbDirection;
-
-            Quaternion targetRotation;
-
-            // 旋转时在X轴发生偏转
-            if(_forward[0] == 1){
-                climbDirection = new Vector3(-90f, 0, 0);
-                targetRotation = Quaternion.LookRotation(Vector3.up, climbDirection); // 保持前方为Z轴
-
-                Model.transform.rotation = Quaternion.Slerp(Model.transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
-
+                
             }else{
-                // climbDirection = new Vector3(-90f, 0, 180f);
-                // targetRotation = Quaternion.LookRotation(Vector3.down, climbDirection); // 保持前方为Z轴
-
-                Model.transform.rotation = Quaternion.Euler(new Vector3(-90, 0, 270));
+                // rb.useGravity = true;
             }
-            // 因为碰撞体之间存在间距，在这里添加一个纠正因子。
-            
-
-            
         }else{
-            // rb.useGravity = true;
+            if (collision.gameObject.layer == 6){
+                if(wallName.Count == 0){
+                    Model.transform.position = new Vector3(Model.transform.position.x, Model.transform.position.y + 1.0288354f, Model.transform.position.z);
+                }
+
+                wallName.Add(collision.gameObject);
+                canClimb = true;
+                isClimbing = true;
+
+                if(_forward[1] == 1){
+                    Model.transform.rotation = Quaternion.Euler(new Vector3(-89.5f, 90f, 0f));
+                }else{
+                    Model.transform.rotation = Quaternion.Euler(new Vector3(89.5f, 90f, 0f));
+                }
+            }
         }
+        
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.layer == 6)
-        {
-            wallName.Remove(collision.gameObject);
-            if (wallName.Count == 0)
+        if(StaticData.is2DCamera){
+            if (collision.gameObject.layer == 6 || collision.gameObject.layer == 1)
             {
-                canClimb = false;
-                isClimbing = false;
-                rb.useGravity = true; // 离开可攀爬区域时恢复重力
+                wallName.Remove(collision.gameObject);
+                if (wallName.Count == 0)
+                {
+                    canClimb = false;
+                    isClimbing = false;
+                    rb.useGravity = true; // 离开可攀爬区域时恢复重力
 
-                // 旋转时切换碰撞体
+                    // 旋转时切换碰撞体
 
-                // 旋转时在X轴发生偏转
-                Vector3 climbDirection = new Vector3(0, 0, 0);
-                Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, climbDirection); // 保持前方为Z轴
-                Model.transform.rotation = Quaternion.Slerp(Model.transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+                    // 旋转时在X轴发生偏转
+                    Vector3 climbDirection = new Vector3(0, 0, 0);
+                    Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, climbDirection); // 保持前方为Z轴
+                    Model.transform.rotation = Quaternion.Slerp(Model.transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
 
-                // 因为碰撞体之间存在间距，在这里添加一个纠正因子。
-                // Model.transform.position = new Vector3(Model.transform.position.x - fixUper[0] * _forward[0], Model.transform.position.y, Model.transform.position.z);
-                Model.transform.localPosition = new Vector3(0, 0, 0);
+                    // 因为碰撞体之间存在间距，在这里添加一个纠正因子。
+                    // Model.transform.position = new Vector3(Model.transform.position.x - fixUper[0] * _forward[0], Model.transform.position.y, Model.transform.position.z);
+                    Model.transform.localPosition = new Vector3(0, 0, 0);
+                }
+            }
+        }else{
+            if (collision.gameObject.layer == 6)
+            {
+                wallName.Remove(collision.gameObject);
+                if (wallName.Count == 0)
+                {
+                    canClimb = false;
+                    isClimbing = false;
+                    rb.useGravity = true; // 离开可攀爬区域时恢复重力
+                    rb.AddForce(new Vector3(500*_forward[1], 50f, 0));
+
+                    // 旋转时切换碰撞体
+
+                    // 旋转时在X轴发生偏转
+                    // Vector3 climbDirection = new Vector3(0, 0, 0);
+                    // Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, climbDirection); // 保持前方为Z轴
+                    // Model.transform.rotation = Quaternion.Slerp(Model.transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+
+                    // 因为碰撞体之间存在间距，在这里添加一个纠正因子。
+                    // Model.transform.position = new Vector3(Model.transform.position.x - fixUper[0] * _forward[0], Model.transform.position.y, Model.transform.position.z);
+                    Model.transform.position = new Vector3(Model.transform.position.x, Model.transform.position.y - 1.0288354f, Model.transform.position.z);
+                }
             }
         }
     }
