@@ -73,8 +73,12 @@ public class CameraController : MonoBehaviour
                 twoD_Camera.Priority = 10;
                 is2DCamera = true;
                 StaticData.is2DCamera = true;
-                //mainCamera.orthographic = true;
+                Invoke("WashLeeRainbow", .5f);
             }
         }
+    }
+
+    void WashLeeRainbow(){
+        mainCamera.orthographic = true;
     }
 }

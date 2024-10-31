@@ -83,16 +83,22 @@ public class PlayerController : MonoBehaviour
             if(input.x >= 0){
                 if(StaticData.is2DCamera){
                     _forward[0] = 1;
+                }else{
+                    _forward[1] = 1;
                 }
             }else{
                 if(StaticData.is2DCamera){
                     _forward[0] = -1;
+                }else{
+                    _forward[1] = -1;
                 }
             }
         }else{
             if(StaticData.is2DCamera){
                 if (_forward[0] == 1) box.center = new Vector3(0, 0.14f, 0);
                 else box.center = new Vector3(0, 0.14f, -0.2f);
+            }else{
+                // 修改碰撞体质心
             }
         }
     }
@@ -101,7 +107,8 @@ public class PlayerController : MonoBehaviour
     {
         if (StaticData.is2DCamera)
         {
-            cameraController.mainCamera.orthographic = true;
+            // 问题的核心
+            // cameraController.mainCamera.orthographic = true;
 
             if (isClimbing)
             {
@@ -160,6 +167,36 @@ public class PlayerController : MonoBehaviour
             rb.useGravity = true; // 恢复重力
             enterTimes = 0;
         }
+    }
+
+    private void Climbing3D(Vector2 input)
+    {
+        // // 攀爬逻辑
+        // rb.useGravity = false; // 禁用重力
+
+        // if(_forward[0] == 1){
+        //     rb.velocity = new Vector2(0, input.x * climbSpeed); // 使用输入的Y值进行上下攀爬
+        // }else{
+        //     rb.velocity = new Vector2(0, input.x * -climbSpeed); // 使用输入的Y值的反向进行上下攀爬
+        // }
+        
+
+        // Vector3 moveDirection = rb.velocity.normalized;
+        // if (moveDirection.x != 0)
+        // {
+        //     // 攀爬时面向垂直方向
+        //     Vector3 climbDirection = new Vector3(0, moveDirection.x, 0);
+        //     Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, climbDirection); // 保持前方为Z轴
+        //     Model.transform.rotation = Quaternion.Slerp(Model.transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+        // }
+
+        // // 停止攀爬
+        // if (input.x == 0)
+        // {
+        //     isClimbing = false;
+        //     rb.useGravity = true; // 恢复重力
+        //     enterTimes = 0;
+        // }
     }
 
     private void OnCollisionEnter(Collision collision)
