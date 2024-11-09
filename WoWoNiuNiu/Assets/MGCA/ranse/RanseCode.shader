@@ -16,10 +16,12 @@ Shader "Unlit/RanseCode"
         _NoiseColor("噪声颜色",2D) = "white"{}
         
         _shiStep("shi的范围",Float) = 1
-        _textureSize("可移动区域大小（得除2）",Float) = 256
+        _textureSize("可移动区域大小（得除2）",Vector) = (1,1,1)
         
         _bump("粘液法线贴图",2D) = "bump"{}
         _ifShadow("是否投影",Range(0,1)) = 1
+        
+        [hidden]_width("width",Vector) = (1,1,1)
         
         [Hidden]_woniu_position("woniu position",Vector) = (1,1,1)
         [Hidden]_startPoint("Start point",Vector) = (0,0,0)
@@ -133,7 +135,7 @@ Shader "Unlit/RanseCode"
             float3 _startPoint;
             half _NoiseScale;
             half _shiStep;
-            half _textureSize;
+            half2 _textureSize;
             float4 _SpecColor;
             half _ifShadow;
             half4 _secColor;
@@ -202,7 +204,7 @@ Shader "Unlit/RanseCode"
                 OUT.fogFactorAndVertexLight = half4(fogFactor,vertexLight);
                 
                 OUT.uv.xy = TRANSFORM_TEX(OUT.posWS.xz,_MainTex);
-                OUT.uv.zw = TRANSFORM_TEX(float2((OUT.posWS.x - _startPoint.x + _textureSize/2.0f)/_textureSize , (OUT.posWS.z - _startPoint.z + _textureSize/2.0f)/_textureSize),_cross);
+                OUT.uv.zw = TRANSFORM_TEX(float2((OUT.posWS.x  - _startPoint.x + _textureSize.x /2.0f)/_textureSize.x , (OUT.posWS.z - _startPoint.z + _textureSize.y/2.0f)/_textureSize.y) ,_cross);
                 
                 return OUT;
             }
@@ -212,12 +214,10 @@ Shader "Unlit/RanseCode"
                 UNITY_SETUP_INSTANCE_ID(IN);
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(IN);
                 
-                half path = SAMPLE_TEXTURE2D(_cross,sampler_cross,IN.uv.zw).r;
-                half cent2 =(1-distance(floor(IN.posWS)+0.5,IN.posWS)) * path;
-                half cent1 = distance(IN.posWS.xz,_woniu_position.xz);
+                half path = SAMPLE_TEXTURE2D(_cross,sampler_cross,IN.uv.zw ).r;
                 half2 temp1 = (IN.posWS - mul(unity_ObjectToWorld,float3(0,0,0))).xz * _NoiseScale;
                 half NoiseColor = clamp(SAMPLE_TEXTURE2D(_NoiseMap,sampler_NoiseMap,temp1).r + SAMPLE_TEXTURE2D(_NoiseMap,sampler_NoiseMap,IN.posWS.xz  * 0.1+ float2(_Time.y,0) * 0.02),0,1);
-                half final1 =clamp((step(cent1 - NoiseColor,_shiStep ) + step(NoiseColor * 0.7 ,clamp(pow(cent2,2) * 1.5,0,0.8)) * 0.6)* clamp(IN.normal.y,0,1),0,1);
+                half final1 =clamp(step(_shiStep,path - NoiseColor),0,1);
                 
                 
                 half3 albedo =  (final1 * SAMPLE_TEXTURE2D(_NoiseColor,sampler_NoiseColor,IN.uv.xy)* _baseColor + (1-final1) * SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,IN.uv.xy)) * clamp( IN.normal.y,0,1) + SAMPLE_TEXTURE2D(_SecTex,sampler_SecTex,IN.posWS.xy).r * abs(-IN.normal.z) * _secColor;
