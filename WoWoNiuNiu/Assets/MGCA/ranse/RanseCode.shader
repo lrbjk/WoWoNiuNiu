@@ -217,10 +217,10 @@ Shader "Unlit/RanseCode"
                 half path = SAMPLE_TEXTURE2D(_cross,sampler_cross,IN.uv.zw ).r;
                 half2 temp1 = (IN.posWS - mul(unity_ObjectToWorld,float3(0,0,0))).xz * _NoiseScale;
                 half NoiseColor = clamp(SAMPLE_TEXTURE2D(_NoiseMap,sampler_NoiseMap,temp1).r + SAMPLE_TEXTURE2D(_NoiseMap,sampler_NoiseMap,IN.posWS.xz  * 0.1+ float2(_Time.y,0) * 0.02),0,1);
-                half final1 =clamp(step(_shiStep,path - NoiseColor),0,1);
+                half final1 =clamp(step(_shiStep,path - NoiseColor * 0.7),0,1);
                 
                 
-                half3 albedo =  (final1 * SAMPLE_TEXTURE2D(_NoiseColor,sampler_NoiseColor,IN.uv.xy)* _baseColor + (1-final1) * SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,IN.uv.xy)) * clamp( IN.normal.y,0,1) + SAMPLE_TEXTURE2D(_SecTex,sampler_SecTex,IN.posWS.xy).r * abs(-IN.normal.z) * _secColor;
+                half3 albedo =  (final1 * SAMPLE_TEXTURE2D(_NoiseColor,sampler_NoiseColor,IN.uv.xy * 0.3)* _baseColor + (1-final1) * SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,IN.uv.xy)) * clamp( IN.normal.y,0,1) + SAMPLE_TEXTURE2D(_SecTex,sampler_SecTex,IN.posWS.xy).r * abs(-IN.normal.z) * _secColor;
                 half4 SpecularColor = _SpecColor;
 
                 half3 normalTS = UnpackNormal(SAMPLE_TEXTURE2D(_bump,sampler_bump,IN.uv.xy+ float2(_Time.y,0) * 0.1)) * final1 + (1-final1) * IN.normal;
