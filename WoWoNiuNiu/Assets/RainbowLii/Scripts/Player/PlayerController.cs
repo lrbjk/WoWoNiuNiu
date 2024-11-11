@@ -228,6 +228,7 @@ public class PlayerController : MonoBehaviour
 
                 // 旋转时在X轴发生偏转
                 if(_forward[0] == 1){
+                    transform.position = collision.transform.position + new Vector3(-0.8f, 0, 0);
                     climbDirection = new Vector3(-90f, 0, 0);
                     targetRotation = Quaternion.LookRotation(Vector3.up, climbDirection); // 保持前方为Z轴
 
@@ -236,7 +237,7 @@ public class PlayerController : MonoBehaviour
                 }else{
                     // climbDirection = new Vector3(-90f, 0, 180f);
                     // targetRotation = Quaternion.LookRotation(Vector3.down, climbDirection); // 保持前方为Z轴
-
+                        transform.position = collision.transform.position + new Vector3(0.8f, 0, 0);
                     Model.transform.rotation = Quaternion.Euler(new Vector3(-90, 0, 270));
                 }
                 // 因为碰撞体之间存在间距，在这里添加一个纠正因子。
@@ -278,7 +279,7 @@ public class PlayerController : MonoBehaviour
         if (StaticData.is2DCamera)
         {
             // 更新2D模式下的碰撞体
-            box.size = new Vector3(20, 1.266826f, 1.489801f);
+            box.size = new Vector3(50, 1.266826f, 1.489801f);
             box.center = new Vector3(-5.53998f, 0.70341f, -0.1639f);
         }
         else
