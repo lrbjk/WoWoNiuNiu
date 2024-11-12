@@ -35,5 +35,5 @@ Material:
     m_Ints: []
     m_Floats: []
     m_Colors:
-    - _SourceUV: {r: 0.42517626, g: 0.47624576, b: 0.048828125, a: 0.048828125}
+    - _SourceUV: {r: 0.8983787, g: 0.3847546, b: 0.048828125, a: 0.048828125}
   m_BuildTextureStacks: []

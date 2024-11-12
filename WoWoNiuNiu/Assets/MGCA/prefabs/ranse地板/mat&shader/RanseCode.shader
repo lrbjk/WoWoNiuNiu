@@ -10,13 +10,14 @@ Shader "Unlit/RanseCode"
         [HDR]_SpecColor("高光颜色",Color) = (1,1,1,1)
         
         _NoiseMap("噪声贴图",2D) = "black"{}
-        _NoiseScale("噪声Scale大小",Float) = 1
-        _NoiseColor("噪声颜色",2D) = "white"{}
+        [hidden]_NoiseScale("噪声Scale大小",Float) = 1
+        [hidden] _NoiseColor("别管了",2D) = "white"{}
+        _NoiseChangeColor("转换颜色用",Color) = (1,1,1,1)
         
         _shiStep("shi的范围",Float) = 1
         _textureSize("可移动区域大小（得除2）",Vector) = (1,1,1)
         
-        _bump("粘液法线贴图",2D) = "bump"{}
+        [hidden]_bump("粘液法线贴图",2D) = "bump"{}
         _ifShadow("是否投影",Range(0,1)) = 1
         
         [hidden]_width("width",Vector) = (1,1,1)
@@ -133,6 +134,7 @@ Shader "Unlit/RanseCode"
             float4 _SpecColor;
             half _ifShadow;
             half4 _secColor;
+            half4 _NoiseChangeColor;
 
             void InitializeInputData(Varyings input,half3 normalTS,out InputData inputData)
             {
@@ -214,7 +216,7 @@ Shader "Unlit/RanseCode"
                 half final1 =clamp((path - NoiseColor * 0.5)* _shiStep,0,1);
                 
                 
-                half3 albedo = final1 * SAMPLE_TEXTURE2D(_NoiseColor,sampler_NoiseColor,IN.uv.xy * 0.3)* _baseColor + (1-final1) * SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,IN.uv.xy);
+                half3 albedo = final1 * SAMPLE_TEXTURE2D(_NoiseColor,sampler_NoiseColor,IN.uv.xy * 0.3).r * _NoiseChangeColor* _baseColor + (1-final1) * SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,IN.uv.xy);
                 half4 SpecularColor = _SpecColor;
 
                 half3 normalTS = lerp(IN.normal,UnpackNormal(SAMPLE_TEXTURE2D(_bump,sampler_bump,IN.posWS.xz  * 0.1+ float2(_Time.y,0) * 0.01)) * final1 + (1-final1) * IN.normal,final1);

@@ -3,7 +3,14 @@ guid: 7bbe620e4acdcff49a466ce3ebae4f05
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - rt: {fileID: 8400000, guid: 1c263787c5b4cdf4183b0459c57074cc, type: 2}
+  - drawImg: {fileID: 2800000, guid: 436a74a6936898b4f83c2bb7d68978ca, type: 3}
+  - defalutImg: {fileID: 2800000, guid: 872e39a65fb2b934fb3048503ea35e7f, type: 3}
+  - stand_mat: {instanceID: 0}
+  - stand_mat2: {instanceID: 0}
+  - woniu: {instanceID: 0}
+  - Noise: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
