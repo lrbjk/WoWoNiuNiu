@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     public List<GameObject> wallName = new List<GameObject>();
     public Transform ClimbingPoint;
     public Transform ClimbingPoint2;
+    private bool isWall;
     // Start is called before the first frame update
     void Start()
     {
@@ -237,7 +238,7 @@ public class PlayerController : MonoBehaviour
                 }else{
                     // climbDirection = new Vector3(-90f, 0, 180f);
                     // targetRotation = Quaternion.LookRotation(Vector3.down, climbDirection); // 保持前方为Z轴
-                        transform.position = collision.transform.position + new Vector3(0.8f, 0, 0);
+                    transform.position = collision.transform.position + new Vector3(0.8f, 0, 0);
                     Model.transform.rotation = Quaternion.Euler(new Vector3(-90, 0, 270));
                 }
                 // 因为碰撞体之间存在间距，在这里添加一个纠正因子。
@@ -250,6 +251,7 @@ public class PlayerController : MonoBehaviour
         }else{
             if (collision.gameObject.layer == 6){
                 if(wallName.Count == 0){
+                    
                     //Model.transform.position = new Vector3(Model.transform.position.x, Model.transform.position.y + 1.0288354f, Model.transform.position.z);
                     if(_forward[1] == 1)
                     {
@@ -264,8 +266,8 @@ public class PlayerController : MonoBehaviour
                 wallName.Add(collision.gameObject);
                 canClimb = true;
                 isClimbing = true;
-
-                if(_forward[1] == 1){
+                isWall = true;
+                if (_forward[1] == 1){
                     Model.transform.rotation = Quaternion.Euler(new Vector3(-89.5f, 90f, 0f));
                 }else{
                     Model.transform.rotation = Quaternion.Euler(new Vector3(-89.5f, 270f, 0f));
@@ -282,7 +284,7 @@ public class PlayerController : MonoBehaviour
             box.size = new Vector3(50, 1.266826f, 1.489801f);
             box.center = new Vector3(-5.53998f, 0.70341f, -0.1639f);
         }
-        else
+        else if(!StaticData.is2DCamera && !isWall)
         {
             // 更新3D模式下的碰撞体
             box.size = new Vector3(1.201506f, 1.321589f, 1.467142f);
@@ -317,8 +319,10 @@ public class PlayerController : MonoBehaviour
             if (collision.gameObject.layer == 6)
             {
                 wallName.Remove(collision.gameObject);
+                isWall = false;
                 if (wallName.Count == 0)
                 {
+                    
                     canClimb = false;
                     isClimbing = false;
                     rb.useGravity = true; // 离开可攀爬区域时恢复重力
@@ -334,9 +338,7 @@ public class PlayerController : MonoBehaviour
                     // 因为碰撞体之间存在间距，在这里添加一个纠正因子。
                     // Model.transform.position = new Vector3(Model.transform.position.x - fixUper[0] * _forward[0], Model.transform.position.y, Model.transform.position.z);
                     //Model.transform.position = new Vector3(Model.transform.position.x, Model.transform.position.y - 1.0288354f, Model.transform.position.z);
-                    Vector3 climbDirection = new Vector3(0, 0, 0);
-                    Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, climbDirection); // 保持前方为Z轴
-                    Model.transform.rotation = Quaternion.Slerp(Model.transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+                   
                     Model.transform.localPosition = new Vector3(0, 0, 0);
                 }
             }
