@@ -25,7 +25,7 @@ public class Position : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
         pos0 = woniu.transform.position - new Vector3(20, 20, 20);
         DrawDefault();
