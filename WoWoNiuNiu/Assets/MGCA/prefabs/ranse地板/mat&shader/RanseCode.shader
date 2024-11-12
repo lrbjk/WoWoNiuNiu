@@ -5,8 +5,6 @@ Shader "Unlit/RanseCode"
         
         _MainTex("地面贴图",2D) = "white"{}
         [HDR]_baseColor("地面混合颜色",Color) = (1,1,1,1)
-        _SecTex("侧面贴图",2D) = "blue"{}
-        [HDR]_secColor("侧面混合颜色",Color) = (1,1,1,1)
         
         _SpecGlossMap("高光贴图",2D) = "white"{}
         [HDR]_SpecColor("高光颜色",Color) = (1,1,1,1)
@@ -29,7 +27,7 @@ Shader "Unlit/RanseCode"
     }
     SubShader
     {
-        Tags { "RenderPipeline" = "UniversalPipeline" "Queue" = "Geometry" "RenderType" = "Opaque""UniversalMaterialType" = "SimpleLit" "IgnoreProjector" = "True" "ShaderModel"="4.5"}
+        Tags { "RenderPipeline" = "UniversalPipeline" "Queue" = "Transparent" "RenderType" = "Opaque""UniversalMaterialType" = "SimpleLit" "IgnoreProjector" = "True" "ShaderModel"="4.5"}
         
         UsePass "Universal Render Pipeline/Lit/DepthOnly"
         UsePass "Universal Render Pipeline/Lit/DepthNormals"
@@ -45,7 +43,6 @@ Shader "Unlit/RanseCode"
             float4 _cross_ST;
             float4 _bump_ST;
             float4 _SpecGlossMap_ST;
-            float4 _SecTex_ST;
         CBUFFER_END
         ENDHLSL
 
@@ -128,9 +125,6 @@ Shader "Unlit/RanseCode"
             TEXTURE2D(_SpecGlossMap);
             SAMPLER(sampler_SpecGlossMap);
 
-            TEXTURE2D(_SecTex);
-            SAMPLER(sampler_SecTex);
-
             float3 _woniu_position;
             float3 _startPoint;
             half _NoiseScale;
@@ -203,7 +197,7 @@ Shader "Unlit/RanseCode"
 
                 OUT.fogFactorAndVertexLight = half4(fogFactor,vertexLight);
                 
-                OUT.uv.xy = TRANSFORM_TEX(OUT.posWS.xz,_MainTex);
+                OUT.uv.xy = TRANSFORM_TEX(IN.uv.xy,_MainTex);
                 OUT.uv.zw = TRANSFORM_TEX(float2((OUT.posWS.x  - _startPoint.x + _textureSize.x /2.0f)/_textureSize.x , (OUT.posWS.z - _startPoint.z + _textureSize.y/2.0f)/_textureSize.y) ,_cross);
                 
                 return OUT;
@@ -216,14 +210,14 @@ Shader "Unlit/RanseCode"
                 
                 half path = SAMPLE_TEXTURE2D(_cross,sampler_cross,IN.uv.zw ).r;
                 half2 temp1 = (IN.posWS - mul(unity_ObjectToWorld,float3(0,0,0))).xz * _NoiseScale;
-                half NoiseColor = clamp(SAMPLE_TEXTURE2D(_NoiseMap,sampler_NoiseMap,temp1).r + SAMPLE_TEXTURE2D(_NoiseMap,sampler_NoiseMap,IN.posWS.xz  * 0.1+ float2(_Time.y,0) * 0.02),0,1);
-                half final1 =clamp(step(_shiStep,path - NoiseColor * 0.7),0,1);
+                half NoiseColor = clamp(SAMPLE_TEXTURE2D(_NoiseMap,sampler_NoiseMap,temp1).r + SAMPLE_TEXTURE2D(_NoiseMap,sampler_NoiseMap,IN.posWS.xz  * 0.1+ float2(_Time.y,0) * 0.01),0,1);
+                half final1 =clamp((path - NoiseColor * 0.5)* _shiStep,0,1);
                 
                 
-                half3 albedo =  (final1 * SAMPLE_TEXTURE2D(_NoiseColor,sampler_NoiseColor,IN.uv.xy * 0.3)* _baseColor + (1-final1) * SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,IN.uv.xy)) * clamp( IN.normal.y,0,1) + SAMPLE_TEXTURE2D(_SecTex,sampler_SecTex,IN.posWS.xy).r * abs(-IN.normal.z) * _secColor;
+                half3 albedo = final1 * SAMPLE_TEXTURE2D(_NoiseColor,sampler_NoiseColor,IN.uv.xy * 0.3)* _baseColor + (1-final1) * SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,IN.uv.xy);
                 half4 SpecularColor = _SpecColor;
 
-                half3 normalTS = UnpackNormal(SAMPLE_TEXTURE2D(_bump,sampler_bump,IN.uv.xy+ float2(_Time.y,0) * 0.1)) * final1 + (1-final1) * IN.normal;
+                half3 normalTS = lerp(IN.normal,UnpackNormal(SAMPLE_TEXTURE2D(_bump,sampler_bump,IN.posWS.xz  * 0.1+ float2(_Time.y,0) * 0.01)) * final1 + (1-final1) * IN.normal,final1);
                 half4 specular = SAMPLE_TEXTURE2D(_SpecGlossMap,sampler_SpecGlossMap,IN.uv.xy) * SpecularColor;
                 
                 half smoothness = specular.a  = exp2(10*specular.a + 1);
