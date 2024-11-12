@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
         playerInput = new PlayerInput();
         playerInput.Enable();
         rb = GetComponent<Rigidbody>();
+        isWall = false;
         // box = GetComponent<BoxCollider>();
     }
 
@@ -98,6 +99,7 @@ public class PlayerController : MonoBehaviour
                 // 修改碰撞体质心
             }
         }
+        Debug.Log(isWall);
     }
 
     private void How2Move(Vector2 input)
@@ -204,7 +206,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(StaticData.is2DCamera){
+        isWall = true;
+        if (StaticData.is2DCamera){
             if (collision.gameObject.layer == 6 || collision.gameObject.layer == 1)
             {
                 if (wallName.Count == 0)
@@ -266,7 +269,6 @@ public class PlayerController : MonoBehaviour
                 wallName.Add(collision.gameObject);
                 canClimb = true;
                 isClimbing = true;
-                isWall = true;
                 if (_forward[1] == 1){
                     Model.transform.rotation = Quaternion.Euler(new Vector3(-89.5f, 90f, 0f));
                 }else{
@@ -291,9 +293,21 @@ public class PlayerController : MonoBehaviour
             box.center = new Vector3(0, 0.7f, 0);
         }
     }
+    private void OnCollisionStay(Collision collision)
+    {
+        if(collision.gameObject.layer == 6)
+        {
+            isWall = true;
+        }
+        else
+        {
+            isWall = false;
+        }
+    }
     private void OnCollisionExit(Collision collision)
     {
-        if(StaticData.is2DCamera){
+        isWall = false;
+        if (StaticData.is2DCamera){
             if (collision.gameObject.layer == 6 || collision.gameObject.layer == 1)
             {
                 wallName.Remove(collision.gameObject);
@@ -319,7 +333,6 @@ public class PlayerController : MonoBehaviour
             if (collision.gameObject.layer == 6)
             {
                 wallName.Remove(collision.gameObject);
-                isWall = false;
                 if (wallName.Count == 0)
                 {
                     

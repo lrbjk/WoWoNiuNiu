@@ -6,19 +6,30 @@ public class PauseManager : MonoBehaviour
 {
     public GameObject canvas;
 
-    private bool isActive = false;
+    private Animator canvasAnim;
 
-    public void Continue(){
-        Time.timeScale = 1;
-        isActive = false;
+    // private bool isActive = false;
+
+    void Start(){
+        canvasAnim = canvas.GetComponent<Animator>();
     }
 
+    public void Continue(){
+        // Time.timeScale = 1;
+        canvasAnim.Play("PauseQuit");
+        // isActive = false;
+    }
+
+    
+
     void Update(){
-        if(!isActive){
+        if(!canvas.active){
             if(Input.GetKeyDown(KeyCode.Escape)){
-                Time.timeScale = 0;
+                // Time.timeScale = 0;
+                GameObject.FindWithTag("Finish").GetComponent<CameraController>().enabled = false;
+                GameObject.FindWithTag("Player").GetComponent<PlayerController>().enabled = false;
                 canvas.SetActive(true);
-                isActive = true;
+                // isActive = true;
             }
         }
     }
