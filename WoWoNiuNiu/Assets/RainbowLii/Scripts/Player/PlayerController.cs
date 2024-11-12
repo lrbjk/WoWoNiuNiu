@@ -334,6 +334,9 @@ public class PlayerController : MonoBehaviour
                     // 因为碰撞体之间存在间距，在这里添加一个纠正因子。
                     // Model.transform.position = new Vector3(Model.transform.position.x - fixUper[0] * _forward[0], Model.transform.position.y, Model.transform.position.z);
                     //Model.transform.position = new Vector3(Model.transform.position.x, Model.transform.position.y - 1.0288354f, Model.transform.position.z);
+                    Vector3 climbDirection = new Vector3(0, 0, 0);
+                    Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, climbDirection); // 保持前方为Z轴
+                    Model.transform.rotation = Quaternion.Slerp(Model.transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
                     Model.transform.localPosition = new Vector3(0, 0, 0);
                 }
             }
