@@ -281,7 +281,7 @@ Shader "Custom/shuimian"
                 
 
                 
-                return specular.xxxx;
+                return final;
                 // return float4(float2(floor(normalUV2.x * 10),floor(normalUV2.y * 10)).xxx,1);
                 // return rotate1.xxxx;
 

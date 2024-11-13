@@ -71,7 +71,7 @@ Material:
     - _WaveSpeed: 65.38
     m_Colors:
     - _CausticsCol: {r: 0, g: 0.8396226, b: 0.6908288, a: 1}
-    - _Color: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _FoamColor: {r: 1.3411765, g: 1.9058824, b: 1.882353, a: 0.60784316}
     - _GradientDir: {r: 0, g: 0, b: 0, a: 1}
     - _NormalScale: {r: 4.96, g: 1, b: 1, a: 1}
