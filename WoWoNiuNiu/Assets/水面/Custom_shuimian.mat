@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Custom_shuimian
+  m_Shader: {fileID: 4800000, guid: aab42bae26c34ed41b2106bdfd26b131, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3000
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 281c02c363ad2c74b98d157454a5b867, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CausticsTex:
+        m_Texture: {fileID: 2800000, guid: e43de94e96b185f4eaf675c2a0ca0387, type: 3}
+        m_Scale: {x: 0.5, y: 0.5}
+        m_Offset: {x: 0, y: 0}
+    - _FoamTex:
+        m_Texture: {fileID: 2800000, guid: 5e5285ef83b13d148bafe99fec6a5874, type: 3}
+        m_Scale: {x: 0.07, y: -0.01}
+        m_Offset: {x: -0.6, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Noise:
+        m_Texture: {fileID: 2800000, guid: 5e5285ef83b13d148bafe99fec6a5874, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Reflection:
+        m_Texture: {fileID: 8900000, guid: ef7513b54a0670140b9b967af7620563, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _WaveTex:
+        m_Texture: {fileID: 2800000, guid: 64876913c0a790741bd66dcfa927398f, type: 3}
+        m_Scale: {x: 0.03, y: 20.15}
+        m_Offset: {x: 0, y: 0}
+    - _bumpMap:
+        m_Texture: {fileID: 2800000, guid: e5f2fe37cc991d44db123c4e26fa822f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _CausticsNoisePower: -0.09
+    - _FoamAlphaFactor: 131.39
+    - _FoamFade: 44.84
+    - _FoamNoisePower: 1.3
+    - _FresnelStepMax: 3.61
+    - _FresnelStepMin: -4.99
+    - _Fresnelpow: 0.75
+    - _Gloss: 18.67
+    - _ShallowAlphaFactor: 12.09
+    - _ShallowFade: 1.82
+    - _SpecularSmooth: 1.8
+    - _SpecularThreshold: 2.79
+    - _WaveRange: 35.55
+    - _WaveScale: 1.68
+    - _WaveSpeed: 65.38
+    m_Colors:
+    - _CausticsCol: {r: 0, g: 0.8396226, b: 0.6908288, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _FoamColor: {r: 1.3411765, g: 1.9058824, b: 1.882353, a: 0.60784316}
+    - _GradientDir: {r: 0, g: 0, b: 0, a: 1}
+    - _NormalScale: {r: 2.64, g: 1, b: 1, a: 1}
+    - _NormalTiling: {r: 0.01, g: 0.01, b: 0.02, a: 0.02}
+    - _NormalUVSPeed: {r: 0.2, g: 0.5, b: -0.5, a: -0.2}
+    - _ReflectionColor: {r: 0.11433481, g: 0.74634534, b: 0.8867924, a: 1}
+    - _SeaBottomColor: {r: 0.9150943, g: 0.9150943, b: 0.9150943, a: 1}
+    - _SeaTopColor: {r: 0.13836467, g: 1, b: 0.33116513, a: 1}
+    - _ShallowColor: {r: 0.25490198, g: 0.46274513, b: 0.5019608, a: 1}
+    - _SpecularColor: {r: 1, g: 0.6185417, b: 0, a: 1}
+    - _WaterBottomColor: {r: 0.06666665, g: 0.38839138, b: 0.65882355, a: 1}
+    - _WaterTopColor: {r: 0, g: 0.6698113, b: 0.6566778, a: 1}
+    - _WaveColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
