@@ -6,6 +6,8 @@ public class PauseManager : MonoBehaviour
 {
     public GameObject canvas;
 
+    public GameObject tutorial;
+
     private Animator canvasAnim;
 
     // private bool isActive = false;
@@ -18,6 +20,10 @@ public class PauseManager : MonoBehaviour
         // Time.timeScale = 1;
         canvasAnim.Play("PauseQuit");
         // isActive = false;
+    }
+
+    public void Tutorial(){
+        tutorial.SetActive(true);
     }
 
     
