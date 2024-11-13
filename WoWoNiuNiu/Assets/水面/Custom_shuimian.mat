@@ -41,7 +41,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Reflection:
-        m_Texture: {fileID: 8900000, guid: ef7513b54a0670140b9b967af7620563, type: 3}
+        m_Texture: {fileID: 8900000, guid: 0d7e67b0a9b987e48868219b219f2076, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _WaveTex:
@@ -58,31 +58,31 @@ Material:
     - _FoamAlphaFactor: 131.39
     - _FoamFade: 44.84
     - _FoamNoisePower: 1.3
-    - _FresnelStepMax: 3.61
-    - _FresnelStepMin: -4.99
+    - _FresnelStepMax: 1
+    - _FresnelStepMin: 0.73
     - _Fresnelpow: 0.75
     - _Gloss: 18.67
     - _ShallowAlphaFactor: 12.09
     - _ShallowFade: 1.82
     - _SpecularSmooth: 1.8
-    - _SpecularThreshold: 2.79
+    - _SpecularThreshold: 0.92
     - _WaveRange: 35.55
     - _WaveScale: 1.68
     - _WaveSpeed: 65.38
     m_Colors:
     - _CausticsCol: {r: 0, g: 0.8396226, b: 0.6908288, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
     - _FoamColor: {r: 1.3411765, g: 1.9058824, b: 1.882353, a: 0.60784316}
     - _GradientDir: {r: 0, g: 0, b: 0, a: 1}
-    - _NormalScale: {r: 2.64, g: 1, b: 1, a: 1}
-    - _NormalTiling: {r: 0.01, g: 0.01, b: 0.02, a: 0.02}
-    - _NormalUVSPeed: {r: 0.2, g: 0.5, b: -0.5, a: -0.2}
+    - _NormalScale: {r: 4.96, g: 1, b: 1, a: 1}
+    - _NormalTiling: {r: 0.16, g: 0.01, b: 0.12, a: 0.02}
+    - _NormalUVSPeed: {r: 1, g: 0.2, b: 0.5, a: -0.3}
     - _ReflectionColor: {r: 0.11433481, g: 0.74634534, b: 0.8867924, a: 1}
-    - _SeaBottomColor: {r: 0.9150943, g: 0.9150943, b: 0.9150943, a: 1}
-    - _SeaTopColor: {r: 0.13836467, g: 1, b: 0.33116513, a: 1}
+    - _SeaBottomColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SeaTopColor: {r: 0.4784314, g: 0.6509804, b: 0.77647066, a: 1}
     - _ShallowColor: {r: 0.25490198, g: 0.46274513, b: 0.5019608, a: 1}
-    - _SpecularColor: {r: 1, g: 0.6185417, b: 0, a: 1}
-    - _WaterBottomColor: {r: 0.06666665, g: 0.38839138, b: 0.65882355, a: 1}
-    - _WaterTopColor: {r: 0, g: 0.6698113, b: 0.6566778, a: 1}
+    - _SpecularColor: {r: 0.45098042, g: 0.9411765, b: 0.6005453, a: 1}
+    - _WaterBottomColor: {r: 0.04901961, g: 0.09509804, b: 0.14117648, a: 1}
+    - _WaterTopColor: {r: 0.1811643, g: 0.5149178, b: 0.8796226, a: 1}
     - _WaveColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
