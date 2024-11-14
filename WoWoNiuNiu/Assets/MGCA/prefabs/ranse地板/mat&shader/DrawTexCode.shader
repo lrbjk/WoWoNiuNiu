@@ -6,6 +6,7 @@ Shader "Custom/DrawTexCode"
         _SourceTex("SourceTex",2D) = "white"{}
         _MainTex("MainTex",2D) = "white"{}
         _Noise("Noise",2D) = "white"{}
+        _Color("Color",Color) = (1,1,1,1)
     }
     SubShader
     {
@@ -40,6 +41,7 @@ Shader "Custom/DrawTexCode"
             SAMPLER(sampler_Noise);
 
             float4 _SourceUV;
+            half3 _Color;
        
            
 
@@ -83,7 +85,7 @@ Shader "Custom/DrawTexCode"
 
                 main = step(noise,main);
                 
-                half final = max(main,SAMPLE_TEXTURE2D(_SourceTex,sampler_SourceTex,IN.uv.zw).r);
+                half final = max(main,SAMPLE_TEXTURE2D(_SourceTex,sampler_SourceTex,IN.uv.zw).r) * _Color;
                 
                 return float4(final.xxx,1);
             }

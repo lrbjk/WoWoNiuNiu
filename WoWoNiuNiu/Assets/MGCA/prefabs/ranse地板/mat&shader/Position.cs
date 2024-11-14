@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
-[ExecuteInEditMode]
 public class Position : MonoBehaviour
 {
 
@@ -20,6 +19,7 @@ public class Position : MonoBehaviour
     public Texture Noise;
     private Vector3 pos0;
     public float shiscale = 10f;
+    public Color DrawColor;
     
     
 
@@ -33,6 +33,7 @@ public class Position : MonoBehaviour
         rt0.Create();
         Vector2 ab = new Vector2(rt.width, rt.height) / shiscale;
         stand_mat2.SetVector("_textureSize",ab);
+        DrawColor = new Color(1f, 1f, 1f, 1f);
         
     }
 
@@ -74,7 +75,7 @@ public class Position : MonoBehaviour
         stand_mat.SetTexture("_SourceTex", rt0);
         stand_mat.SetVector("_SourceUV", SO);
         stand_mat.SetTexture("_Noise", Noise);
-        Debug.Log(SO.ToString());
+        stand_mat.SetVector("_Color",DrawColor);
 
         Graphics.DrawTexture(rect, drawImg, stand_mat);
 

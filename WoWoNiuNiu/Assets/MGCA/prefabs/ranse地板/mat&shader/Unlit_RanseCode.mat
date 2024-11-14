@@ -63,7 +63,7 @@ Material:
     - _baseColor: {r: 1, g: 1, b: 1, a: 1}
     - _secColor: {r: 0.38845193, g: 1, b: 0, a: 1}
     - _startPoint: {r: 0, g: 0, b: 0, a: 0}
-    - _textureSize: {r: 102.4, g: 102.4, b: 0, a: 0}
+    - _textureSize: {r: 68.26667, g: 68.26667, b: 0, a: 0}
     - _width: {r: 1, g: 1, b: 1, a: 1}
     - _woniu_position: {r: -3.4413, g: 1.7728, b: 0.045045, a: 0}
   m_BuildTextureStacks: []
