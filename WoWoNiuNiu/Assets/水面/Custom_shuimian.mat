@@ -64,8 +64,8 @@ Material:
     - _Gloss: -0.19
     - _ShallowAlphaFactor: 12.09
     - _ShallowFade: 1.82
-    - _SpecularSmooth: 0.71
-    - _SpecularThreshold: 1.4
+    - _SpecularSmooth: 0.72
+    - _SpecularThreshold: 1.18
     - _WaveRange: 35.55
     - _WaveScale: 1.68
     - _WaveSpeed: 65.38

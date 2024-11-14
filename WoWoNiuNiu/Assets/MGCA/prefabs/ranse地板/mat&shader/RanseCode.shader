@@ -222,8 +222,8 @@ Shader "Unlit/RanseCode"
 
                 half3 normalTS = lerp(IN.normal,UnpackNormal(SAMPLE_TEXTURE2D(_bump,sampler_bump,IN.posWS.xz  * 0.1+ float2(_Time.y,0) * 0.01)) * final1 + (1-final1) * IN.normal,final1);
                 half4 specular = SAMPLE_TEXTURE2D(_SpecGlossMap,sampler_SpecGlossMap,IN.uv.xy) * SpecularColor;
-                
-                half3 albedo = lerp( path * _baseColor ,SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,IN.uv.xy),(1-final1) * SAMPLE_TEXTURE2D(_NoiseMap,sampler_NoiseMap,IN.posWS.xz * 0.08 + _Time.y * 0.02) * 0.8 + 0.2);
+                // SAMPLE_TEXTURE2D(_NoiseMap,sampler_NoiseMap,IN.posWS.xz * 0.08 + _Time.y * 0.02)
+                half3 albedo = lerp( SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,IN.uv.xy),path * _baseColor ,final1 *( SAMPLE_TEXTURE2D(_NoiseMap,sampler_NoiseMap,IN.posWS.xz * 0.08 + _Time.y * 0.02).r * 0.6 + 0.2));
                 half smoothness = specular.a  = exp2(10*specular.a + 1);
 
                 InputData inputData;
