@@ -85,9 +85,11 @@ Shader "Custom/DrawTexCode"
 
                 main = step(noise,main);
                 
-                half final = max(main,SAMPLE_TEXTURE2D(_SourceTex,sampler_SourceTex,IN.uv.zw).r) * _Color;
+                half3 finalSourceTex = SAMPLE_TEXTURE2D(_SourceTex,sampler_SourceTex,IN.uv.zw);
+              
+                half3 final = main * _Color + (1-main) * finalSourceTex;
                 
-                return float4(final.xxx,1);
+                return float4(final.xyz,1);
             }
 
            

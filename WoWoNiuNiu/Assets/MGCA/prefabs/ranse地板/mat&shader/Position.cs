@@ -20,6 +20,8 @@ public class Position : MonoBehaviour
     private Vector3 pos0;
     public float shiscale = 10f;
     public Color DrawColor;
+
+    public GameObject Change;
     
     
 
@@ -33,7 +35,7 @@ public class Position : MonoBehaviour
         rt0.Create();
         Vector2 ab = new Vector2(rt.width, rt.height) / shiscale;
         stand_mat2.SetVector("_textureSize",ab);
-        DrawColor = new Color(1f, 1f, 1f, 1f);
+        DrawColor = Change.GetComponent<ChangeDraw>().blue;
         
     }
 

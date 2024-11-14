@@ -28,7 +28,7 @@ Shader "Unlit/RanseCode"
     }
     SubShader
     {
-        Tags { "RenderPipeline" = "UniversalPipeline" "Queue" = "Transparent" "RenderType" = "Opaque""UniversalMaterialType" = "SimpleLit" "IgnoreProjector" = "True" "ShaderModel"="4.5"}
+        Tags { "RenderPipeline" = "UniversalPipeline" "Queue" = "Geometry" "RenderType" = "Opaque""UniversalMaterialType" = "SimpleLit" "IgnoreProjector" = "True" "ShaderModel"="4.5"}
         
         UsePass "Universal Render Pipeline/Lit/DepthOnly"
         UsePass "Universal Render Pipeline/Lit/DepthNormals"
@@ -210,18 +210,20 @@ Shader "Unlit/RanseCode"
                 UNITY_SETUP_INSTANCE_ID(IN);
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(IN);
                 
-                half path = SAMPLE_TEXTURE2D(_cross,sampler_cross,IN.uv.zw ).r;
+                half3 path = SAMPLE_TEXTURE2D(_cross,sampler_cross,IN.uv.zw ).rgb;
+                
                 half2 temp1 = (IN.posWS - mul(unity_ObjectToWorld,float3(0,0,0))).xz * _NoiseScale;
                 half NoiseColor = clamp(SAMPLE_TEXTURE2D(_NoiseMap,sampler_NoiseMap,temp1).r + SAMPLE_TEXTURE2D(_NoiseMap,sampler_NoiseMap,IN.posWS.xz  * 0.1+ float2(_Time.y,0) * 0.01),0,1);
-                half final1 =clamp((path - NoiseColor * 0.5)* _shiStep,0,1);
+                half final1 =clamp(((path.r+path.b + path.g) - NoiseColor * 0.5)* _shiStep,0,1); 
                 
                 
-                half3 albedo = final1 * SAMPLE_TEXTURE2D(_NoiseColor,sampler_NoiseColor,IN.uv.xy * 0.3).r * _NoiseChangeColor* _baseColor + (1-final1) * SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,IN.uv.xy);
+                
                 half4 SpecularColor = _SpecColor;
 
                 half3 normalTS = lerp(IN.normal,UnpackNormal(SAMPLE_TEXTURE2D(_bump,sampler_bump,IN.posWS.xz  * 0.1+ float2(_Time.y,0) * 0.01)) * final1 + (1-final1) * IN.normal,final1);
                 half4 specular = SAMPLE_TEXTURE2D(_SpecGlossMap,sampler_SpecGlossMap,IN.uv.xy) * SpecularColor;
                 
+                half3 albedo = lerp( path * _baseColor ,SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,IN.uv.xy),(1-final1) * SAMPLE_TEXTURE2D(_NoiseMap,sampler_NoiseMap,IN.posWS.xz * 0.08 + _Time.y * 0.02) * 0.8 + 0.2);
                 half smoothness = specular.a  = exp2(10*specular.a + 1);
 
                 InputData inputData;
