@@ -55,6 +55,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2713306251340950808}
   - component: {fileID: 2713306251340950809}
+  - component: {fileID: 8695140141742520447}
   m_Layer: 6
   m_Name: TopWall
   m_TagString: Untagged
@@ -92,6 +93,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.520874, y: 3.229138, z: 1.412117}
   m_Center: {x: -1.5907173, y: 2.4070947, z: -3.21}
+--- !u!114 &8695140141742520447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2713306251340950807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2095927e0b4079c4989b9dd9fa6fb8ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  glassPrefab: {fileID: 2713306251340950807}
+  tilesize: 16
+  tileoffset: {x: 0, y: 0, z: 0}
 --- !u!1001 &2713306249948927399
 PrefabInstance:
   m_ObjectHideFlags: 0
