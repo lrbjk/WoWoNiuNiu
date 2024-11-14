@@ -56,16 +56,16 @@ Material:
     m_Floats:
     - _CausticsNoisePower: -0.09
     - _FoamAlphaFactor: 131.39
-    - _FoamFade: 44.84
+    - _FoamFade: 0.47
     - _FoamNoisePower: 1.3
-    - _FresnelStepMax: 1
-    - _FresnelStepMin: 0.73
+    - _FresnelStepMax: 1.51
+    - _FresnelStepMin: 0.2
     - _Fresnelpow: 0.75
-    - _Gloss: 18.67
+    - _Gloss: -0.19
     - _ShallowAlphaFactor: 12.09
     - _ShallowFade: 1.82
-    - _SpecularSmooth: 1.8
-    - _SpecularThreshold: 0.92
+    - _SpecularSmooth: 0.71
+    - _SpecularThreshold: 1.4
     - _WaveRange: 35.55
     - _WaveScale: 1.68
     - _WaveSpeed: 65.38
@@ -73,16 +73,16 @@ Material:
     - _CausticsCol: {r: 0, g: 0.8396226, b: 0.6908288, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _FoamColor: {r: 1.3411765, g: 1.9058824, b: 1.882353, a: 0.60784316}
-    - _GradientDir: {r: 0, g: 0, b: 0, a: 1}
+    - _GradientDir: {r: 0, g: 1, b: 0, a: 1}
     - _NormalScale: {r: 4.96, g: 1, b: 1, a: 1}
-    - _NormalTiling: {r: 0.16, g: 0.01, b: 0.12, a: 0.02}
-    - _NormalUVSPeed: {r: 1, g: 0.2, b: 0.5, a: -0.3}
-    - _ReflectionColor: {r: 0.11433481, g: 0.74634534, b: 0.8867924, a: 1}
+    - _NormalTiling: {r: 0.02, g: 0.01, b: 0.02, a: 0.02}
+    - _NormalUVSPeed: {r: 0, g: 0.5, b: 0.2, a: 0.1}
+    - _ReflectionColor: {r: 0.11433465, g: 0.74634534, b: 0.8867924, a: 0.7372549}
     - _SeaBottomColor: {r: 0, g: 0, b: 0, a: 1}
     - _SeaTopColor: {r: 0.4784314, g: 0.6509804, b: 0.77647066, a: 1}
     - _ShallowColor: {r: 0.25490198, g: 0.46274513, b: 0.5019608, a: 1}
-    - _SpecularColor: {r: 0.45098042, g: 0.9411765, b: 0.6005453, a: 1}
+    - _SpecularColor: {r: 0.9339623, g: 0.73637754, b: 0.35831252, a: 1}
     - _WaterBottomColor: {r: 0.04901961, g: 0.09509804, b: 0.14117648, a: 1}
-    - _WaterTopColor: {r: 0.1811643, g: 0.5149178, b: 0.8796226, a: 1}
+    - _WaterTopColor: {r: 0.18396471, g: 0.5151012, b: 0.8784315, a: 1}
     - _WaveColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

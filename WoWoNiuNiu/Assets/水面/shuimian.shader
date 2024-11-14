@@ -2,30 +2,25 @@ Shader "Custom/shuimian"
 {
     Properties
     {
-        _Color("Main Color",Color) = (1,1,1,1)
-        _MainTex("MainTex",2D) = "white"{}
-        
-        _SeaBottomColor("Sea Bottom",Color) = (1,1,1,1)
-        _SeaTopColor("Sea Top",Color) = (1,1,1,1)
-        [HDR]_WaterBottomColor("WaveBottomColor",Color) = (1,1,1,1)
-        [HDR]_WaterTopColor("WaveTopColor",Color) = (1,1,1,1)
-        _GradientDir("_GradientDir",Vector) = (1,1,1)
+        [HDR]_WaterBottomColor("浪（normal）背面颜色",Color) = (1,1,1,1)
+        [HDR]_WaterTopColor("浪（normal）正面颜色",Color) = (1,1,1,1)
+        _GradientDir("颜色衰减的方向",Vector) = (1,1,1)
         
         _bumpMap("Bump Map",2D) = "bump"{}
         _NormalScale ("NormalScale",Vector) = (1,1,1)
         _NormalUVSPeed("NormalUVSpeed",Vector) = (1,1,1,1)
         _NormalTiling("Normaltiling",Vector) = (1,1,1,1)
         
-        _Gloss("Gloss",Float) = 0.5
-        _SpecularThreshold("SpecularThreshold",Float) = 1
-        _SpecularSmooth("SpecularSmooth",Float) = 1
-        _SpecularColor("SpecularColor",Color) = (1,1,1,1)
+        _Gloss("远洋面粗糙度",Float) = 0.5
+        _SpecularThreshold("远洋面高光值",Float) = 1
+        _SpecularSmooth("远洋高光渐变范围",Float) = 1
+        _SpecularColor("远洋高光",Color) = (1,1,1,1)
         
-        _Fresnelpow("Fresnelpow",Float) = 1
+        _Fresnelpow("菲涅尔强度",Float) = 1
         _FresnelStepMin("FresnelstepMin",Float) = 1
         _FresnelStepMax("FresnelstepMax",Float) = 2
-        _Reflection("reflection",Cube) = "cube"{}
-        _ReflectionColor("reflectionColor",Color) = (1,1,1,1)
+        _Reflection("环境反射",Cube) = "cube"{}
+        _ReflectionColor("环境反射颜色",Color) = (1,1,1,1)
         
         _ShallowFade("ShallowFade",Float) = 1
         _ShallowAlphaFactor("ShallowAlphaFactor",Float) = 1
@@ -52,6 +47,7 @@ Shader "Custom/shuimian"
         _GradientDir("GradientDir",Vector) = (1,1,1,1)
         
         _Noise("Noise",2D) = "white"{}
+        
         
     }
     SubShader
@@ -150,13 +146,10 @@ Shader "Custom/shuimian"
                 float4 posCS : SV_POSITION;
                 float2 uv : TEXCOORD0;
                 float3 posWS : TEXCOORD1;
-                float4 TtoW0 : TEXCOORD2;
-                float4 TtoW1 : TEXCOORD3;
-                float4 TtoW2 : TEXCOORD4;
 
-                float3 normalWS : TEXCOORD5;
-                float4 posSS : TEXCOORD6;
-                float3 posVS : TEXCOORD7;
+                float3 normalWS : TEXCOORD2;
+                float4 posSS : TEXCOORD3;
+                float3 posVS : TEXCOORD4;
             };
 
 
@@ -179,13 +172,7 @@ Shader "Custom/shuimian"
                 
                 VertexNormalInputs normalInput = GetVertexNormalInputs(IN.normal,IN.tangent);
                 float3 normal = normalInput.normalWS;
-                float3 tangent = normalInput.tangentWS;
-                float3 binormal = normalInput.bitangentWS;
-                OUT.TtoW0 = float4(tangent.x,binormal.x,normal.x,viewDir.x);
-                OUT.TtoW1 = float4(tangent.y,binormal.y,normal.y,viewDir.y);
-                OUT.TtoW2 = float4(tangent.z,binormal.z,normal.z,viewDir.z);
                 
-                OUT.uv = IN.uv;
 
                 OUT.normalWS = normal;
                 OUT.posSS = ComputeScreenPos(OUT.posCS);
@@ -197,38 +184,39 @@ Shader "Custom/shuimian"
 
             half4 frag(Varings IN) : SV_Target
             {
-                half3 viewDir = normalize(GetWorldSpaceViewDir(IN.posWS)) ;
+                
                 _GradientDir = normalize(_GradientDir);
                 //用两个UV值采样水面增加层次感
-                float2 normalUV1 = IN.posWS.xz;
                 float3 CameraPos = GetCameraPositionWS();
+                float2 normalUV1 = IN.posWS.xz;
+
+                half3 viewDir = normalize(GetWorldSpaceViewDir(IN.posWS + float3(-25,0,0))) ;
                 // float3 distance = length(CameraPos - IN.posWS);
                 // normalUV1 *= 1/pow(2,distance * 0.01);
                 
-                float3 normalTex1 = UnpackNormalScale(SAMPLE_TEXTURE2D(_bumpMap,sampler_bumpMap,normalUV1 * _NormalTiling.xy + _Time.x * _NormalUVSPeed.xy),_NormalScale);
-                float3 normalTex2 = UnpackNormalScale(SAMPLE_TEXTURE2D(_bumpMap,sampler_bumpMap,normalUV1 * _NormalTiling.zw + _Time.x * _NormalUVSPeed.zw),_NormalScale);
+                float3 normalTex1 = UnpackNormalScale(SAMPLE_TEXTURE2D(_bumpMap,sampler_bumpMap,normalUV1.yx * _NormalTiling.xy + _Time.x * _NormalUVSPeed.xy),_NormalScale);
+                float3 normalTex2 = UnpackNormalScale(SAMPLE_TEXTURE2D(_bumpMap,sampler_bumpMap,normalUV1.yx * _NormalTiling.zw + _Time.x * _NormalUVSPeed.zw),_NormalScale);
                 //blendnormals
-                half3 bump = BlendNormals(normalTex1,normalTex2);
+                half3 bump = pow(BlendNormals(normalTex1,normalTex2),distance(CameraPos.xz,IN.posWS.xz) * 0.01);
                 //切线空间转世界空间
-                bump = normalize(half3(dot(bump,IN.TtoW0.xyz),dot(bump,IN.TtoW1.xyz),dot(bump,IN.TtoW2.xyz)));
 
                 Light mainLight = GetMainLight();  
                 half3 LightDir = normalize(mainLight.direction);
                 half nDotL = dot(bump,LightDir);
                 //half—lambert
-                half halfDir = normalize(LightDir + viewDir)* 0.5 + 0.5;
-                half nDotH = normalize(dot(bump,halfDir));
-                half nDotV = normalize(dot(bump,viewDir));
+                half halfDir = saturate(LightDir + viewDir);
+                half nDotH = clamp(dot(bump,halfDir),0,1);
+                half nDotV = clamp(dot(bump,viewDir),0,1);
 
-                
-                float3 diffuse = lerp(_WaterBottomColor.rgb * _WaterBottomColor.a, _WaterTopColor.rgb * _WaterTopColor.a,step(nDotL,0.9));
+                //海浪
+                float3 diffuse = lerp(_WaterBottomColor.rgb * _WaterBottomColor.a, _WaterTopColor.rgb * _WaterTopColor.a,step(0.75,nDotL));
                 //用一个向量和视角的均值控制渐变方向
                 float iNDotV = saturate(dot(IN.normalWS,normalize(viewDir + _GradientDir)));
                 
                 diffuse = (iNDotV) * diffuse * 0.4 + diffuse * 0.6;
                 
-                float specRange = exp2(_Gloss * 10.0 + 1.0);
-                float specTerm = pow(max(0,nDotH),specRange);
+                float specRange = exp2(_Gloss * 10 + 1.0);
+                float specTerm = pow(max(0,1-nDotH),specRange);
                 specTerm = smoothstep(_SpecularThreshold - _SpecularSmooth,_SpecularThreshold + _SpecularSmooth,specTerm);
 
                 float3 specular = _SpecularColor.rgb * _SpecularColor.a * specTerm;
@@ -281,7 +269,7 @@ Shader "Custom/shuimian"
                 
 
                 
-                return final;
+                return final.rgbr;
                 // return float4(float2(floor(normalUV2.x * 10),floor(normalUV2.y * 10)).xxx,1);
                 // return rotate1.xxxx;
 
