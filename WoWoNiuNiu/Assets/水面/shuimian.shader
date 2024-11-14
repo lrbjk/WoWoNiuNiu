@@ -190,14 +190,14 @@ Shader "Custom/shuimian"
                 float3 CameraPos = GetCameraPositionWS();
                 float2 normalUV1 = IN.posWS.xz;
 
-                half3 viewDir = normalize(GetWorldSpaceViewDir(IN.posWS + float3(-25,0,0))) ;
+                half3 viewDir = normalize(GetWorldSpaceViewDir(IN.posWS + float3(-20,0,0))) ;
                 // float3 distance = length(CameraPos - IN.posWS);
                 // normalUV1 *= 1/pow(2,distance * 0.01);
                 
                 float3 normalTex1 = UnpackNormalScale(SAMPLE_TEXTURE2D(_bumpMap,sampler_bumpMap,normalUV1.yx * _NormalTiling.xy + _Time.x * _NormalUVSPeed.xy),_NormalScale);
                 float3 normalTex2 = UnpackNormalScale(SAMPLE_TEXTURE2D(_bumpMap,sampler_bumpMap,normalUV1.yx * _NormalTiling.zw + _Time.x * _NormalUVSPeed.zw),_NormalScale);
                 //blendnormals
-                half3 bump = pow(BlendNormals(normalTex1,normalTex2),distance(CameraPos.xz,IN.posWS.xz) * 0.01);
+                half3 bump = pow(BlendNormals(normalTex1,normalTex2),distance(CameraPos.xz,IN.posWS.xz) * 0.02);
                 //切线空间转世界空间
 
                 Light mainLight = GetMainLight();  
@@ -269,7 +269,7 @@ Shader "Custom/shuimian"
                 
 
                 
-                return final.rgbr;
+                return final.rgba;
                 // return float4(float2(floor(normalUV2.x * 10),floor(normalUV2.y * 10)).xxx,1);
                 // return rotate1.xxxx;
 
