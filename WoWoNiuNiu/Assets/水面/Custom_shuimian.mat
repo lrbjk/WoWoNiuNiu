@@ -54,21 +54,21 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _CausticsNoisePower: -0.09
-    - _FoamAlphaFactor: 131.39
-    - _FoamFade: 0.47
-    - _FoamNoisePower: 1.3
+    - _CausticsNoisePower: 0.53
+    - _FoamAlphaFactor: 25.2
+    - _FoamFade: 3.99
+    - _FoamNoisePower: 1
     - _FresnelStepMax: 1.51
     - _FresnelStepMin: 0.2
     - _Fresnelpow: 0.75
     - _Gloss: -0.19
     - _ShallowAlphaFactor: 12.09
-    - _ShallowFade: 1.82
+    - _ShallowFade: 1.04
     - _SpecularSmooth: 0.72
     - _SpecularThreshold: 1.18
-    - _WaveRange: 35.55
+    - _WaveRange: -1.3
     - _WaveScale: 1.68
-    - _WaveSpeed: 65.38
+    - _WaveSpeed: 1
     m_Colors:
     - _CausticsCol: {r: 0, g: 0.8396226, b: 0.6908288, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
